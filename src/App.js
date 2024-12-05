@@ -25,6 +25,14 @@ function App() {
     return todoText.includes(searchText);
   });
 
+  const addTodo = () => {
+    const newTodos = [...todos];
+    const newTodo = { text: "New TODO", completed: false };
+    newTodos.push(newTodo);
+
+    setTodos(newTodos);
+  };
+
   const completeTodo = (todoIndex) => {
     const newTodos = [...todos];
     newTodos[todoIndex].completed = true;
@@ -56,7 +64,7 @@ function App() {
         ))}
       </TodoList>
 
-      <CreateTodoButton />
+      <CreateTodoButton addTodo={() => addTodo()} />
     </>
   );
 }
