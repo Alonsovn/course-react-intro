@@ -5,15 +5,29 @@ import { TodoItem } from "./TodoItem";
 import { TodoList } from "./TodoList";
 import { TodoSearch } from "./TodoSearch";
 
-const defaultTodos = [
-  { text: "Learn React", completed: true },
-  { text: "Learn components", completed: false },
-  { text: "Practice", completed: false },
-  { text: "Run the project", completed: false },
-];
+// const defaultTodos = [
+//   { text: "Learn React", completed: true },
+//   { text: "Learn components", completed: false },
+//   { text: "Practice", completed: false },
+//   { text: "Run the project", completed: false },
+// ];
+
+// localStorage.setItem("TODOS_V1", defaultTodos);
+// localStorage.removeItem('TODOS_V1')
 
 function App() {
-  const [todos, setTodos] = React.useState(defaultTodos);
+  const localStorageTodos = localStorage.getItem("TODOS_V1");
+  let parsedTodos;
+  parsedTodos = JSON.parse(localStorageTodos);
+
+  if (!localStorageTodos) {
+    localStorage.setItem("TODOS_V1", JSON.stringify([]));
+    parsedTodos = [];
+  } else {
+    parsedTodos = JSON.parse(localStorageTodos);
+  }
+
+  const [todos, setTodos] = React.useState(parsedTodos);
   const [searchValue, setSearchValue] = React.useState("");
 
   const completedTodos = todos.filter((todo) => !!todo.completed).length;
@@ -30,6 +44,12 @@ function App() {
     const newTodo = { text: "New TODO", completed: false };
     newTodos.push(newTodo);
 
+    saveTodos(newTodos);
+  };
+
+  const saveTodos = (newTodos) => {
+    localStorage.setItem("TODOS_V1", JSON.stringify(newTodos));
+
     setTodos(newTodos);
   };
 
@@ -37,14 +57,14 @@ function App() {
     const newTodos = [...todos];
     newTodos[todoIndex].completed = true;
 
-    setTodos(newTodos);
+    saveTodos(newTodos);
   };
 
   const deleteTodo = (todoIndex) => {
     const newTodos = [...todos];
     newTodos.splice(todoIndex, 1);
 
-    setTodos(newTodos);
+    saveTodos(newTodos);
   };
 
   return (
