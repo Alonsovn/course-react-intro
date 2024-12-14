@@ -1,9 +1,7 @@
 import React from "react";
-import { CreateTodoButton } from "./CreateTodoButton";
-import { TodoCounter } from "./TodoCounter";
-import { TodoItem } from "./TodoItem";
-import { TodoList } from "./TodoList";
-import { TodoSearch } from "./TodoSearch";
+
+import { useLocalStorage } from "./useLocalStorage";
+import { AppUI } from "./AppUI";
 
 // const defaultTodos = [
 //   { text: "Learn React", completed: true },
@@ -14,25 +12,6 @@ import { TodoSearch } from "./TodoSearch";
 
 // localStorage.setItem("TODOS_V1", defaultTodos);
 // localStorage.removeItem('TODOS_V1')
-function useLocalStorage(itemName, initialValue) {
-  const localStorageItem = localStorage.getItem(itemName);
-  let parsedItem;
-
-  if (!localStorageItem) {
-    localStorage.setItem(itemName, JSON.stringify(initialValue));
-    parsedItem = initialValue;
-  } else {
-    parsedItem = JSON.parse(localStorageItem);
-  }
-  const [item, setItem] = React.useState(parsedItem);
-
-  const saveItem = (newItem) => {
-    localStorage.setItem(itemName, JSON.stringify(newItem));
-    setItem(newItem);
-  };
-
-  return [item, saveItem];
-}
 
 function App() {
   const [todos, saveTodos] = useLocalStorage("TODOS_V1", []);
@@ -73,22 +52,16 @@ function App() {
 
   return (
     <>
-      <TodoCounter completed={completedTodos} total={totalTodos} />
-      <TodoSearch searchValue={searchValue} setSearchValue={setSearchValue} />
-
-      <TodoList>
-        {searchedTodos.map((todo, index) => (
-          <TodoItem
-            key={index}
-            text={todo.text}
-            completed={todo.completed}
-            onComplete={() => completeTodo(index)}
-            onDelete={() => deleteTodo(index)}
-          />
-        ))}
-      </TodoList>
-
-      <CreateTodoButton addTodo={() => addTodo()} />
+      <AppUI
+        completedTodos={completedTodos}
+        totalTodos={totalTodos}
+        searchValue={searchValue}
+        setSearchValue={setSearchValue}
+        searchedTodos={searchedTodos}
+        completeTodo={completeTodo}
+        deleteTodo={deleteTodo}
+        addTodo={addTodo}
+      />
     </>
   );
 }
