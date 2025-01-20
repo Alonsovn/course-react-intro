@@ -35,3 +35,13 @@ function useLocalStorage(itemName, initialValue) {
 }
 
 export { useLocalStorage };
+
+// const defaultTodos = [
+//   { text: "Learn React", completed: true },
+//   { text: "Learn components", completed: false },
+//   { text: "Practice", completed: false },
+//   { text: "Run the project", completed: false },
+// ];
+
+// localStorage.setItem("TODOS_V1", defaultTodos);
+// localStorage.removeItem('TODOS_V1')
